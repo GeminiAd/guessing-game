@@ -14,23 +14,40 @@ var timer;
 var resultsTracker;
 var playAgain;
 var targetWord = "storage";
+var lettersLeft;
 
 //We want the user to be able to play a game when they push Start Game
 function startGame() {
-
+    lettersLeft = targetWord.length;
+    targetWordSectionElement.innerHTML = "";
     loadWord();
     document.addEventListener("keydown", keyListener);
 }
 
 function keyListener(event) {
-
     var keyPress = event.key;
     for (var i = 0; i < targetWord.length; i++) {
         if (targetWord[i] === keyPress) {
             var letterElement = document.getElementById("letter-"+i);
-            letterElement.textContent = keyPress;
+            var state = letterElement.getAttribute("data-state");
+            
+            if (state === "hidden") {
+                letterElement.textContent = keyPress;
+                lettersLeft--;
+                letterElement.setAttribute("data-state", "visible");
+            }
         }
     }
+
+    console.log("Letters left: " + lettersLeft);
+
+    if (lettersLeft === 0) {
+        gameOver();
+    }
+}
+
+function gameOver() {
+    alert("Game Over");
 }
 
 /* 
