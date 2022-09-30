@@ -10,7 +10,7 @@ var targetWordSectionElement = document.querySelector(".target-word-section");
 
 var startButton;
 var fillIn;
-var timer;
+var secondsLeft;
 var resultsTracker;
 var playAgain;
 var targetWord = "storage";
@@ -18,10 +18,23 @@ var lettersLeft;
 
 //We want the user to be able to play a game when they push Start Game
 function startGame() {
+    secondsLeft = 20;
+    setTimer();
+
     lettersLeft = targetWord.length;
     targetWordSectionElement.innerHTML = "";
     loadWord();
     document.addEventListener("keydown", keyListener);
+
+    var timerInterval = setInterval(function() {
+        secondsLeft--;
+        setTimer();
+
+        if (secondsLeft === 0) {
+            clearInterval(timerInterval);
+            gameOver();
+        }
+    }, 1000);
 }
 
 function keyListener(event) {
@@ -80,6 +93,11 @@ function loadWord() {
     console.log(elementToAdd);
 
     targetWordSectionElement.appendChild(elementToAdd);
+}
+
+function setTimer() {
+    var timeElement = document.getElementById("time");
+    timeElement.textContent = secondsLeft;
 }
 
 //We want time to count down from 10 when the game starts
