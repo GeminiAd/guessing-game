@@ -70,3 +70,10 @@ li {
 p {
     margin: 5px;
 }
+
+h2 {
+    height: 100px;
+
+    font-size: 40px;
+    font-weight: bold;
+}
