@@ -17,7 +17,20 @@ var targetWord = "storage";
 
 //We want the user to be able to play a game when they push Start Game
 function startGame() {
+
     loadWord();
+    document.addEventListener("keydown", keyListener);
+}
+
+function keyListener(event) {
+
+    var keyPress = event.key;
+    for (var i = 0; i < targetWord.length; i++) {
+        if (targetWord[i] === keyPress) {
+            var letterElement = document.getElementById("letter-"+i);
+            letterElement.textContent = keyPress;
+        }
+    }
 }
 
 /* 
@@ -40,8 +53,10 @@ function loadWord() {
         var liElToAdd = document.createElement("li");
         liElToAdd.textContent = "_";
         liElToAdd.className = "letter";
+        liElToAdd.id = "letter-" + i;
         liElToAdd.setAttribute("data-state", "hidden");
         liElToAdd.setAttribute("data-letter", targetWord[i]);
+
         elementToAdd.appendChild(liElToAdd);
     }
 
