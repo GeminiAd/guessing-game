@@ -4,33 +4,37 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" src="./assets/css/reset.css">
-        <link rel="stylesheet" src="./assets/css/style.css">
+        <link rel="stylesheet" href="./assets/css/reset.css">
+        <link rel="stylesheet" href="./assets/css/style.css">
         <title>Guessing Game</title>
     </head>
 
-    <header>
-        <h1>Guessing Game</h1>
-        <button class="start">Start</button>
-    </header>
-
     <body>
-        <section class = "target word">
-            <p>S</p>
-            <p>T</p>
-            <p>O</p>
-            <p>R</p>
-            <p>A</p>
-            <p>G</p>
-            <p>E</p>
-        </section>
+        <header>
+            <h1>Guessing Game</h1>
+            <button class="start">Start</button>
+        </header>
 
-        <section class = "play card">
-            <p>Wins</p>
-            <p>Losses</p>
-            <button>Play Again</button>
-            <section class = "timer"></section>
-        </section>
+        <main>
+            <section class = "target-word-section">
+                <ul class="terget-word">
+                    <li class="letter">S</li>
+                    <li class="letter">T</li>
+                    <li class="letter">O</li>
+                    <li class="letter">R</li>
+                    <li class="letter">A</li>
+                    <li class="letter">G</li>
+                    <li class="letter">E</li>
+                </ul>
+            </section>
+
+            <section class = "play-card">
+                <p>Wins: <span id="num-wins">0</span></p>
+                <p>Losses: <span id="num-losses">0</span></p>
+                <button class="play-again-button">Play Again</button>
+                <p class = "timer">Time: <span id="time">0</span></p>
+            </section>
+        </main>
 
         <script src="./assets/js/script.js"></script>
     </body>
