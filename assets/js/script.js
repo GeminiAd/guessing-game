@@ -7,18 +7,28 @@
 
 var startButtonElement = document.querySelector(".start-button");
 var targetWordSectionElement = document.querySelector(".target-word-section");
+var winTextElement = document.querySelector(".win-text");
+var playAgainButtonElement = document.querySelector(".play-again-button");
 
 var startButton;
 var fillIn;
 var secondsLeft;
 var resultsTracker;
 var playAgain;
-var targetWord = "storage";
+var targetWord;
 var lettersLeft;
+var wins, losses;
+var timerInterval
+
+var words = ["storage", "array", "cornucopia", "button", "timer", "guess", "section", "hidden", "justify", "align"];
 
 //We want the user to be able to play a game when they push Start Game
 function startGame() {
-    secondsLeft = 20;
+    selectRandomWord();
+
+    winTextElement.textContent = "";
+
+    secondsLeft = 10;
     setTimer();
 
     lettersLeft = targetWord.length;
@@ -26,7 +36,7 @@ function startGame() {
     loadWord();
     document.addEventListener("keydown", keyListener);
 
-    var timerInterval = setInterval(function() {
+    timerInterval = setInterval(function() {
         secondsLeft--;
         setTimer();
 
@@ -35,6 +45,25 @@ function startGame() {
             gameOver();
         }
     }, 1000);
+}
+
+function initializeWinLossCount() {
+    wins = localStorage.getItem("wins");
+    losses = localStorage.getItem("losses");
+
+    if (wins == null) {
+        wins = 0;
+        writeWins();
+    } else {
+        updateWinsDisplay();
+    }
+
+    if (losses == null) {
+        losses = 0;
+        writeLosses();
+    } else {
+        updateLossesDisplay();
+    }
 }
 
 function keyListener(event) {
@@ -52,15 +81,18 @@ function keyListener(event) {
         }
     }
 
-    console.log("Letters left: " + lettersLeft);
-
     if (lettersLeft === 0) {
         gameOver();
     }
 }
 
 function gameOver() {
-    alert("Game Over");
+    if (secondsLeft === 0) {
+        youLose();
+    } else {
+        clearInterval(timerInterval);
+        youWin();
+    }
 }
 
 /* 
@@ -95,9 +127,46 @@ function loadWord() {
     targetWordSectionElement.appendChild(elementToAdd);
 }
 
+function selectRandomWord() {
+    var randomIndex = Math.floor(Math.random() * words.length);
+    targetWord = words[randomIndex];
+}
+
 function setTimer() {
     var timeElement = document.getElementById("time");
     timeElement.textContent = secondsLeft;
+}
+
+function youLose() {
+    winTextElement.textContent = "You Lose!";
+    losses++;
+    updateLossesDisplay();
+    writeLosses();
+}
+
+function youWin() {
+    winTextElement.textContent = "You Win!";
+    wins++;
+    updateWinsDisplay();
+    writeWins();
+}
+
+function updateLossesDisplay() {
+    var numLossesElement = document.getElementById("num-losses");
+    numLossesElement.textContent = losses;
+}
+
+function updateWinsDisplay() {
+    var numWinsElement = document.getElementById("num-wins");
+    numWinsElement.textContent = wins;
+}
+
+function writeLosses() {
+    localStorage.setItem("losses", losses);
+}
+
+function writeWins() {
+    localStorage.setItem("wins", wins);
 }
 
 //We want time to count down from 10 when the game starts
@@ -106,4 +175,8 @@ function setTimer() {
 //  local storage
 //We want the user to have the option to play again
 
-startButtonElement.addEventListener("click", startGame)
+startButtonElement.addEventListener("click", startGame);
+playAgainButtonElement.addEventListener("click", startGame);
+
+
+initializeWinLossCount();
